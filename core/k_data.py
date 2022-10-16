@@ -39,7 +39,7 @@ def query_history_k_data_plus_d_today(code, start_date):
     return query_history_k_data_plus_d(code, start_date, end_date=date_util.now_str())
 
 
-@lru_cache
+@lru_cache(maxsize=10000, typed=True)
 @cache_manage_day
 def query_history_k_data_plus_nd(code, n):
     return query_history_k_data_plus_d_today(code, date_util.last_n_days_str(n))
@@ -55,6 +55,10 @@ def query_history_k_data_plus_1000d(code):
 @cache_manage_day
 def query_history_k_data_plus_10000d(code):
     return query_history_k_data_plus_nd(code, 10000)
+
+
+def query_history_k_data_plus_nd_codes(codes, n):
+    return [query_history_k_data_plus_nd(code, n) for code in codes]
 
 
 def query_history_k_data_plus_1000d_codes(codes):
