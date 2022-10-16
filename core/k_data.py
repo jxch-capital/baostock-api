@@ -4,6 +4,7 @@ from functools import lru_cache
 from core.login import login
 from core.cache import cache_manage_day
 import util.date_util as date_util
+from util.convert_util import to_index_k_data
 
 
 @login
@@ -26,9 +27,10 @@ def query_history_k_data_plus(code, cols, start_date, end_date, frequency, adjus
 
 
 def query_history_k_data_plus_cols(code, start_date, end_date, frequency):
-    return query_history_k_data_plus(code,
-                                     "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
-                                     start_date, end_date, frequency, adjust="2")
+    return to_index_k_data(
+        query_history_k_data_plus(code,
+                                  "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
+                                  start_date, end_date, frequency, adjust="2"))
 
 
 def query_history_k_data_plus_d(code, start_date, end_date):
