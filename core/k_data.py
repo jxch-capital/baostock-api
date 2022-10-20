@@ -5,6 +5,7 @@ from core.login import login
 from core.cache import cache_manage_day
 import util.date_util as date_util
 from util.convert_util import to_index_k_data
+import logging
 
 
 @login
@@ -19,6 +20,7 @@ def query_history_k_data_plus(code, cols, start_date, end_date, frequency, adjus
     :param adjust: 复权类型，默认不复权：3；1：后复权；2：前复权。已支持分钟线、日线、周线、月线前后复权。
     :return: DataFrame 类型的股价数据
     """
+    logging.info(f"code:{code}, start_data:{start_date}, end_data:{end_date}")
     rs = bs.query_history_k_data_plus(code, cols, start_date, end_date, frequency, adjust)
     data_list = []
     while (rs.error_code == '0') & rs.next():
@@ -27,10 +29,10 @@ def query_history_k_data_plus(code, cols, start_date, end_date, frequency, adjus
 
 
 def query_history_k_data_plus_cols(code, start_date, end_date, frequency):
-    return to_index_k_data(
-        query_history_k_data_plus(code,
-                                  "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
-                                  start_date, end_date, frequency, adjust="2"))
+    k_data_dfs = query_history_k_data_plus(code,
+                                           "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,isST",
+                                           start_date, end_date, frequency, adjust="2")
+    return to_index_k_data(k_data_dfs)
 
 
 def query_history_k_data_plus_d(code, start_date, end_date):

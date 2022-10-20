@@ -1,5 +1,6 @@
 import json
 import stockstats
+import pandas as pd
 from util.date_util import default_fmt
 
 
@@ -10,7 +11,26 @@ def k_data_df_list_to_json(df_list):
             for df in df_list]
 
 
+def to_support_k_data(df):
+    df["open"] = pd.to_numeric(df["open"])
+    df["high"] = pd.to_numeric(df["high"])
+    df["low"] = pd.to_numeric(df["low"])
+    df["close"] = pd.to_numeric(df["close"])
+    df["preclose"] = pd.to_numeric(df["preclose"])
+    df["volume"] = pd.to_numeric(df["volume"])
+    df["amount"] = pd.to_numeric(df["amount"])
+    df["adjustflag"] = pd.to_numeric(df["adjustflag"])
+    df["turn"] = pd.to_numeric(df["turn"])
+    df["tradestatus"] = pd.to_numeric(df["tradestatus"])
+    df["pctChg"] = pd.to_numeric(df["pctChg"])
+    df["isST"] = pd.to_numeric(df["isST"])
+    return df
+
+
 def to_index_k_data(old_df):
+    old_df = to_support_k_data(old_df)
+    the_code = old_df['code']
+    old_df.drop(columns=['code'])
     ss = stockstats.StockDataFrame.retype(old_df)
     df = ss[['open', 'close', 'high', 'low', 'volume',
              'tr', 'atr', 'close_-1_d', 'close_5_sma', 'close_20_sma', 'close_60_sma', 'close_120_sma', 'close_200_sma',
@@ -31,4 +51,5 @@ def to_index_k_data(old_df):
     df['rate_ema120_5_ema'] = ss[['rate_ema120', 'rate_ema120_5_ema']]['rate_ema120_5_ema']
     df['rate_ema200_5_ema'] = ss[['rate_ema200', 'rate_ema200_5_ema']]['rate_ema200_5_ema']
     df.reset_index(inplace=True)
+    df['code'] = the_code
     return df
