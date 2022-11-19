@@ -33,5 +33,5 @@ def query_k_data():
         res['date'] = df['date'].tolist() \
             if 'date' not in res or len(res['date']) < len(df['date'].tolist()) \
             else res['date']
-        res[code] = to_json(df)
+        res[code.replace('.', '')] = to_json(df)
     return res
