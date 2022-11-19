@@ -25,8 +25,8 @@ def grafana_root():
 @return_json
 def query_k_data():
     codes = param_list("codes", request)
-    start = date_util.timestamp_to_str(param("start", request)) / 1000
-    end = date_util.timestamp_to_str(param("end", request)) / 1000
+    start = date_util.s_timestamp_to_str(int(param("start", request) // 1000))
+    end = date_util.s_timestamp_to_str(int(param("end", request) // 1000))
     res = {}
     for code in codes:
         df = k_data.query_history_k_data_plus_d(code, start, end)

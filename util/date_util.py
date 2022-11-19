@@ -21,5 +21,5 @@ def last_n_days_str(n):
     return date_to_str(dt.now() - datetime.timedelta(days=n))
 
 
-def timestamp_to_str(timestamp):
-    return time.strftime(default_fmt, time.localtime(int(timestamp)))
+def s_timestamp_to_str(timestamp):
+    return time.strftime(default_fmt, time.localtime(timestamp))
