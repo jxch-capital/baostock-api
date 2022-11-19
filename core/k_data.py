@@ -35,6 +35,7 @@ def query_history_k_data_plus_cols(code, start_date, end_date, frequency):
     return to_index_k_data(k_data_dfs)
 
 
+@lru_cache(maxsize=10000, typed=True)
 def query_history_k_data_plus_d(code, start_date, end_date):
     return query_history_k_data_plus_cols(code, start_date, end_date, frequency="d")
 

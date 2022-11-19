@@ -2,6 +2,7 @@ import json
 import stockstats
 import pandas as pd
 from util.date_util import default_fmt
+from pandas import DataFrame
 
 
 def k_data_df_list_to_json(df_list):
@@ -52,4 +53,4 @@ def to_index_k_data(old_df):
     df['rate_ema200_5_ema'] = ss[['rate_ema200', 'rate_ema200_5_ema']]['rate_ema200_5_ema']
     df.reset_index(inplace=True)
     df['code'] = the_code
-    return df
+    return DataFrame(df)
